@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eiwaz</title>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand"><span class="logo"></span><span>Eiwaz</span></div>
+      <button id="project-btn" class="btn ghost" title="Open a project folder (⌘O)">Open a project folder…</button>
+      <div class="grow"></div>
+      <button id="needs-you" class="pill warn" hidden></button>
+      <div id="models"></div>
+    </header>
+
+    <div class="body">
+      <nav class="rail" aria-label="Screens">
+        <button data-view="work" class="on" aria-current="page" title="Work: your agents (Ctrl+1)"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>Work</button>
+        <button data-view="changes" title="Changes: what the agents changed, with undo (Ctrl+2)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"></path><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"></path></svg>Changes<span class="badge" hidden></span></button>
+        <button data-view="guide" title="Guide: add-ons that could help this project (Ctrl+3)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5"></polygon></svg>Guide</button>
+        <button data-view="bench" title="Bench: test which local models work with agents (Ctrl+4)"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="6" y1="20" x2="6" y2="12"></line><line x1="12" y1="20" x2="12" y2="5"></line><line x1="18" y1="20" x2="18" y2="9"></line></svg>Bench</button>
+        <button data-view="preview" title="Preview: see your site, pictures, videos and docs (Ctrl+5)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</button>
+        <button data-view="savings" title="Savings: work done on this Mac instead of the cloud (Ctrl+6)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 13.5L12 17l3.5-3.5"></path></svg>Savings</button>
+      </nav>
+
+      <div id="work" class="work">
+        <aside class="side" id="side">
+          <div class="side-head">
+            <h2>Agents in this project</h2>
+            <div class="menu-wrap">
+              <button id="new-btn" class="btn small" aria-haspopup="true" aria-expanded="false">+ New</button>
+              <div id="new-menu" class="menu" hidden></div>
+            </div>
+            <button id="collapse-btn" class="iconbtn" title="Collapse this panel to give the terminals more room (⌘\)" aria-label="Collapse agents panel" aria-expanded="true">«</button>
+          </div>
+          <div id="session-list"></div>
+          <p class="hint">Drag an agent or tab onto the edge of a pane to see them side by side. Drop files anywhere to attach them. Paste screenshots with ⌘V.</p>
+        </aside>
+        <aside class="side-mini" id="side-mini" hidden aria-label="Agents (collapsed)">
+          <button id="expand-btn" class="iconbtn" title="Show the agents panel (⌘\)" aria-label="Expand agents panel">»</button>
+          <div id="mini-list"></div>
+        </aside>
+
+        <main class="main">
+          <div class="tabs" id="tabs"></div>
+          <div class="terms" id="terms">
+            <div id="grid" class="grid"></div>
+            <div id="empty" class="empty">
+              <h1>Start an agent</h1>
+              <p id="empty-sub">Open a project folder, then pick an agent. Each one runs in its own real terminal inside that folder.</p>
+              <div id="empty-actions" class="empty-actions"></div>
+            </div>
+          </div>
+          <div class="compose">
+            <div id="split-strip" class="split-strip" hidden></div>
+            <div id="chips" class="chips"></div>
+            <label for="msg" class="sr">Message to agent</label>
+            <textarea id="msg" rows="2" placeholder="Type a message for the agent. Paste screenshots or drop files to attach them."></textarea>
+            <div class="compose-foot">
+              <label class="field">Send to <select id="target"></select></label>
+              <span class="hint grow">Enter sends · Shift+Enter new line · ⌘V pastes images · Esc stops</span>
+              <button id="stop-btn" class="btn danger" title="Sends Esc. Press again within 2 seconds to force stop (Ctrl+C).">Stop agent</button>
+              <button id="send-btn" class="btn primary">Send</button>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <section id="view-changes" class="view" hidden aria-label="Changes"></section>
+      <section id="view-guide" class="view" hidden aria-label="Guide"></section>
+      <section id="view-bench" class="view" hidden aria-label="Model Bench"></section>
+      <section id="view-preview" class="view" hidden aria-label="Preview"></section>
+      <section id="view-savings" class="view" hidden aria-label="Savings"></section>
+    </div>
+
+    <footer class="status" aria-label="Usage">
+      <span id="st-active"></span>
+      <span id="st-split" hidden></span>
+      <span class="grow"></span>
+      <span id="st-agents"></span>
+      <span id="st-ollama"></span>
+      <span id="st-mem"></span>
+    </footer>
+
+    <div id="parking" hidden></div>
+    <div id="drag-hint" class="drag-hint" hidden>Drop anywhere to put it beside the pane you're in · on a pane to pick its side · Esc cancels</div>
+    <div id="drop" class="drop" hidden><div>Drop to attach to your message</div></div>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
