@@ -55,7 +55,7 @@
       "icons/icon.png"
     ],
     "macOS": {
-      "signingIdentity": "714C63D0FFE131B718907738A929BFCEBF99869F"
+      "signingIdentity": "-"
     }
   }
 }
